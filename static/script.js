@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add click event to the search icon
     searchIcon.addEventListener('click', function () {
 
-            const loadingBar = document.getElementById('loading-bar');
-            loadingBar.style.width = '100%'; // Start loading
-            loadingBar.style.transition = 'width 2s ease'; // Duration of the loading
+            // const loadingBar = document.getElementById('loading-bar');
+            // loadingBar.style.width = '100%'; // Start loading
+            // loadingBar.style.transition = 'width 2s ease'; // Duration of the loading
 
         appContainer.style.display = 'none';
         // Get the input value
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Validate input
         if (!inputValue) {
             alert('Please enter a link!');
-            loadingBar.style.width = '0'; // Reset loading bar if input is empty
+            // loadingBar.style.width = '0'; // Reset loading bar if input is empty
             return; // Exit if the input is empty
         }
 
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert('There was an error sending the link. Please try again.'); // Optional user alert
             }).finally(() => {
                 // Reset the loading bar after fetch completes
-                loadingBar.style.width = '0'; // Reset loading bar
+                // loadingBar.style.width = '0'; // Reset loading bar
             });
 
         // Hide the robot and text, show the overlay, and adjust the search container as before
