@@ -3,17 +3,28 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    /* animation: none !important;
+    transition: none !important; */
 }
+
 
 /* Scene setup */
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
     background-color: black;
     font-family: 'Courier New', Courier, monospace;
+}
+
+.full-body-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    /* overflow: hidden; */
 }
 
 /* Stars */
@@ -172,7 +183,7 @@ body {
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 /* Blink effect for the AI robot */
@@ -320,6 +331,7 @@ body {
     right: 0;
     bottom: 0;
     background-color: rgba(194, 194, 194, 0.154);
+    width: 100%;
     z-index: 5;
     display: none;
     transition: opacity 0.3s ease;
@@ -330,27 +342,46 @@ body {
     opacity: 1;
 }
 
-/* Speech bubble styling */
 .speech-bubble {
-    position: absolute;
-    background-color: #fff;
-    border: 1px solid #4ecca3;
-    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4d03f;
+    /* Yellowish folder color */
+    border: 2px solid #333;
+    /* Darker border for retro look */
+    border-radius: 4px;
     padding: 10px;
-    max-width: 200px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    animation: pop-up 0.3s forwards;
-    display: none;
+    /* margin: 10px; */
+    box-shadow: 5px 5px 0 #333;
+    position: relative;
+    /* min-width: 200px; */
+    /* max-width: 100%; */
+    width: 10%;
+    position: relative;
+    /* top: auto; */
+    /* bottom: auto; */
+    left: 0px;
+    min-height: 100px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
-.speech-bubble::after {
-    content: "";
+/* Adding the tab for the folder look */
+.speech-bubble::before {
+    content: '';
     position: absolute;
-    bottom: -10px;
-    left: 20px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: #fff transparent transparent transparent;
+    top: -10px;
+    left: 10px;
+    width: 50px;
+    height: 10px;
+    background-color: #f4d03f;
+    border: 2px solid #333;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+}
+
+.speech-bubble:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes pop-up {
@@ -369,69 +400,129 @@ body {
     }
 }
 
-/* Responsive adjustments for the robot */
-@media (max-width: 768px) {
-    .robot {
-        width: 60px;
-    }
-
-    .head,
-    .body,
-    .arm,
-    .leg {
-        width: 75%;
-    }
-}
-
 .bubble-container {
-    /* position: fixed; */
-    /* Keep it fixed on the screen */
-    /* bottom: 20px; */
-    /* Adjust based on preference */
-    /* left: 20px; */
-    /* Adjust based on preference */
-    /* max-height: 300px; */
-    /* Set a maximum height */
-    /* width: 300px; */
-    /* Set a fixed width */
-    overflow-y: auto;
-    /* Allow vertical scrolling */
-    z-index: 1000;
-    /* Ensure it appears above other elements */
-    /* background: rgba(255, 255, 255, 0.9); */
-    /* Optional: Background for visibility */
-    border-radius: 8px;
-    /* Optional: Rounded corners */
-    padding: 10px;
-    /* Optional: Add some padding */
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    /* Optional: Shadow for depth */
-
-    /* width: 100%; */
-}
-
-.speech-bubble {
-    background: #f1f1f1;
-    /* Background color for speech bubbles */
-    border-radius: 10px;
-    /* Rounded corners */
-    margin: 5px 0;
-    /* Space between bubbles */
-    padding: 10px;
-    /* Padding inside the bubble */
-    position: relative;
-    /* For positioning the triangle */
-
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    justify-content: flex-start;
+    /* align-items: center; */
     width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .file-name {
     font-weight: bold;
-    /* Make the file name bold */
-    
+    color: #333;
+    text-align: left;
+    margin-bottom: 8px;
 }
 
+
 .summary {
-    margin-top: 5px;
-    /* Space between file name and summary */
+    font-size: 14px;
+    color: #555;
+    flex-grow: 1;
+    overflow-y: auto;
+    /* position: relative; */
+
+}
+
+.summary-content {
+    height: 100%;
+    /* overflow: hidden; */
+}
+
+.read-more-btn {
+    background-color: #4ecca3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    align-self: flex-start;
+}
+
+.read-more-btn:hover {
+    background-color: #3eae8a;
+}
+
+/* Retro folder styling for showFile elements */
+.show-file {
+    display: flex;
+    flex-direction: column;
+    background-color: #e0e0d1;
+    /* Light beige background for a retro feel */
+    border: 2px solid #6e6e5d;
+    /* Dark border for a folder outline */
+    border-radius: 4px;
+    width: fit-content;
+    padding: 10px;
+    margin: 15px;
+    box-shadow: 4px 4px 0px #6e6e5d;
+    /* Shadow for 3D effect */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Styling for the file name */
+.show-file .file-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    background-color: #dcdcc3;
+    padding: 5px;
+    border-bottom: 2px solid #6e6e5d;
+    margin-bottom: 8px;
+}
+
+/* Styling for the summary content */
+.show-file .summary {
+    font-size: 14px;
+    color: #3d3d3d;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    padding: 5px;
+    background-color: #f5f5dc;
+    /* A very light yellowish-beige for contrast */
+    border-radius: 2px;
+}
+
+/* Read More / Read Less button styling */
+.show-file .read-more-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #333;
+    background-color: #b2b2a6;
+    /* Retro button color */
+    border: 2px solid #6e6e5d;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #6e6e5d;
+    /* Subtle shadow for 3D look */
+    transition: all 0.2s ease;
+}
+
+.show-file .read-more-btn:hover {
+    background-color: #dcdcc3;
+    /* Lighten on hover */
+    box-shadow: 1px 1px 0px #6e6e5d;
+    /* Reduce shadow on hover */
+}
+
+.bubble-container-header {
+    color: #FFEA00;
+    /* Yellow text color */
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #333;
+    /* Dark background to contrast text */
+    padding: 10px;
+    position: relative;
+    z-index: 2;
+    /* Ensure it appears on top of other elements */
 }

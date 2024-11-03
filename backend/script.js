@@ -53,16 +53,21 @@ setInterval(jump, 1000);
 
 // Wait for the DOM to load
 document.addEventListener("DOMContentLoaded", function () {
+    const appContainer = document.querySelector('.app-container');
     const searchContainer = document.querySelector('.search-container');
     const searchInput = document.querySelector('.search-input');
     const searchIcon = document.querySelector('.search-icon');
     const projectName = document.querySelector('#project-name'); // Select the text element
     const inputText = document.querySelector('#input-text'); // Select the text element
     const backgroundOverlay = document.querySelector('.background-overlay'); // Select the background overlay
-    const bubble_container = document.querySelector('.bubble-container');
+    // const bubble_container = document.querySelector('.bubble-container');
 
     // Add click event to the search icon
     searchIcon.addEventListener('click', function () {
+
+        appContainer.style.display = 'none';
+
+        
 
         // Get the input value
         const inputValue = searchInput.value;
@@ -108,9 +113,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }).then(data => {
                     // console.log('GOT THE DATA' + data);
                     console.log('GOT THE DATA: ', JSON.stringify(data, null, 2)); // Pretty print the JSON data
+                    generateSpeechBubbles(data.responses);
                 })
 
-                showSpeechBubble("Link Posted", "Your link has been sent successfully!"); // Show feedback
+                // showSpeechBubble("Link Posted", "Your link has been sent successfully!"); // Show feedback
 
                 return response.json(); // Parse JSON response
             })
@@ -118,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log('Success:', data); // Handle success
 
                 // Generate bubbles with API response data
-                generateSpeechBubbles([{ 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }]);
+                // generateSpeechBubbles([{ 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }, { 'fileName': "filename.txt", 'summary': 'my summary goes here!' }]);
             })
             .catch(error => {
                 console.error('Error:', error); // Handle errors
@@ -142,111 +148,180 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to display a single speech bubble with file name and summary
-function showSpeechBubble(fileName, summary) {
-    // Create the speech bubble element
+// function showSpeechBubble(fileName, summary = null) {
+//     // Create the speech bubble element
+//     const bubble = document.createElement('div');
+//     bubble.className = 'speech-bubble';
+//     // bubble.style.display = 'block'; // Make the bubble visible
+
+//     bubble.style.display = 'block'; // Ensure it behaves as a block element
+//     bubble.style.width = '100%'; // Set width after display is block
+
+//     // Create file name section
+//     const fileNameElement = document.createElement('div');
+//     fileNameElement.className = 'file-name';
+//     fileNameElement.textContent = `File: ${fileName}`;
+
+
+
+//     if (summary != null) {
+//         // Create summary section
+//         const summaryElement = document.createElement('div');
+//         summaryElement.className = 'summary';
+//         summaryElement.textContent = `Summary: ${summary}`;
+//         // Append file name and summary to the bubble
+//         bubble.appendChild(fileNameElement);
+//         bubble.appendChild(summaryElement);
+//     } else // Append file name and summary to the bubble
+//         bubble.appendChild(fileNameElement);
+
+//     // Append the bubble to the container
+//     document.querySelector('.bubble-container').appendChild(bubble);
+// }
+
+// function showSpeechBubble(fileName, summary = null) {
+//     const bubble = document.createElement('div');
+//     bubble.className = 'speech-bubble';
+
+//     const fileNameElement = document.createElement('div');
+//     fileNameElement.className = 'file-name';
+//     fileNameElement.textContent = `File: ${fileName}`;
+//     bubble.appendChild(fileNameElement);
+
+//     if (summary != null) {
+//         const summaryElement = document.createElement('div');
+//         summaryElement.className = 'summary';
+
+//         const summaryContent = document.createElement('div');
+//         summaryContent.className = 'summary-content';
+//         summaryContent.textContent = summary;
+//         summaryElement.appendChild(summaryContent);
+
+//         const readMoreBtn = document.createElement('button');
+//         readMoreBtn.className = 'read-more-btn';
+//         readMoreBtn.textContent = 'Read More';
+//         readMoreBtn.addEventListener('click', () => toggleSummary(summaryElement, readMoreBtn));
+
+//         bubble.appendChild(summaryElement);
+//         bubble.appendChild(readMoreBtn);
+//     }
+
+//     document.querySelector('.bubble-container').appendChild(bubble);
+// }
+
+// function showSpeechBubble(fileName, summary = null, index) {
+//     const bubble = document.createElement('div');
+//     bubble.className = 'speech-bubble';
+
+//     const fileNameElement = document.createElement('div');
+//     fileNameElement.className = 'file-name';
+//     fileNameElement.textContent = `File: ${fileName}`;
+//     bubble.style.marginRight = `${index*10}px`
+//     bubble.appendChild(fileNameElement);
+
+//     // if (summary != null) {
+//     //     const summaryElement = document.createElement('div');
+//     //     summaryElement.className = 'summary'; // Use the updated class for scrolling
+//     //     summaryElement.textContent = summary; // Set the summary text
+//     //     bubble.appendChild(summaryElement); // Append the summary to the bubble
+//     // }
+
+//     document.querySelector('.bubble-container').appendChild(bubble);
+// }
+
+// function showFile(fileName, summary = null, index) {
+//     const folder = document.createElement('div');
+//     folder.className = 'show-file';
+
+//     const fileNameElement = document.createElement('div');
+//     fileNameElement.className = 'file-name';
+//     fileNameElement.textContent = `File: ${fileName}`;
+//     folder.style.marginRight = `${index*10}px`
+//     folder.appendChild(fileNameElement);
+
+//     if (summary != null) {
+//         const summaryElement = document.createElement('div');
+//         summaryElement.className = 'summary';
+//         summaryElement.textContent = summary;
+
+//         const readMoreBtn = document.createElement('button');
+//         readMoreBtn.className = 'read-more-btn';
+//         readMoreBtn.textContent = 'Read More';
+
+//         readMoreBtn.addEventListener('click', () => toggleSummary(summaryElement, readMoreBtn));
+
+//         folder.appendChild(summaryElement);
+//         folder.appendChild(readMoreBtn);
+//     }
+
+//     document.querySelector('.bubble-container').appendChild(folder);
+// }
+
+
+function showSpeechBubble(fileName, summary = null, index) {
     const bubble = document.createElement('div');
     bubble.className = 'speech-bubble';
-    // bubble.style.display = 'block'; // Make the bubble visible
 
-    bubble.style.display = 'block'; // Ensure it behaves as a block element
-    bubble.style.width = '100%'; // Set width after display is block
-
-    // Create file name section
     const fileNameElement = document.createElement('div');
     fileNameElement.className = 'file-name';
     fileNameElement.textContent = `File: ${fileName}`;
 
-    // Create summary section
-    const summaryElement = document.createElement('div');
-    summaryElement.className = 'summary';
-    summaryElement.textContent = `Summary: ${summary}`;
+    // Set margin left based on index for indentation effect
+    bubble.style.marginLeft = `${index * 20}px`;
 
-    // bubble.style.width = "100%";
-
-    // Append file name and summary to the bubble
     bubble.appendChild(fileNameElement);
-    bubble.appendChild(summaryElement);
 
-    // Append the bubble to the container
     document.querySelector('.bubble-container').appendChild(bubble);
 }
 
-// Function to generate speech bubbles with the API response data
-// function generateSpeechBubbles(data) {
-//     // Check if data is an array and has elements
-//     if (Array.isArray(data) && data.length > 0) {
-//         let i = 0; // Initialize the index to keep track of bubbles
-//         const displayInterval = 1000; // Time interval between displaying bubbles (in milliseconds)
+function showFile(fileName, summary = null, index) {
+    const folder = document.createElement('div');
+    folder.className = 'show-file';
 
-//         function displayBubble() {
-//             // Check if all bubbles have been displayed
-//             if (i < data.length) {
-//                 const item = data[i];
-//                 const fileName = item.fileName || 'Unknown File';
-//                 const summary = item.summary || 'No Summary Available';
+    const fileNameElement = document.createElement('div');
+    fileNameElement.className = 'file-name';
+    fileNameElement.textContent = `File: ${fileName}`;
 
-//                 // Show the speech bubble
-//                 showSpeechBubble(fileName, summary);
+    // Set margin left based on index for indentation effect
+    folder.style.marginLeft = `${index * 50}px`;
 
-//                 // Increment the index for the next bubble
-//                 i++;
+    folder.appendChild(fileNameElement);
 
-//                 // Call the displayBubble function again after the interval
-//                 setTimeout(displayBubble, displayInterval);
-//             } else {
-//                 // Optionally, you can perform an action after all bubbles are displayed
-//                 console.log("All bubbles displayed.");
-//             }
-//         }
+    if (summary != null) {
+        const summaryElement = document.createElement('div');
+        summaryElement.className = 'summary';
+        summaryElement.textContent = summary;
 
-//         // Start displaying bubbles
-//         displayBubble();
-//     } else {
-//         showSpeechBubble('No files found', 'No summaries available.');
-//     }
-// }
+        // const readMoreBtn = document.createElement('button');
+        // readMoreBtn.className = 'read-more-btn';
+        // readMoreBtn.textContent = 'Read More';
 
-function generateSpeechBubbles(data) {
-    // Maximum number of bubbles to display
-    // const maxBubbles = 5;
+        // readMoreBtn.addEventListener('click', () => toggleSummary(summaryElement, readMoreBtn));
 
-    // Check if data is an array and has elements
-    if (Array.isArray(data) && data.length > 0) {
-        let i = 0; // Initialize the index to keep track of bubbles
-        const displayInterval = 1000; // Time interval between displaying bubbles (in milliseconds)
+        folder.appendChild(summaryElement);
+        // folder.appendChild(readMoreBtn);
+    }
 
-        function displayBubble() {
-            // Check if all bubbles have been displayed
-            if (i < data.length) {
-                const item = data[i];
-                const fileName = item.fileName || 'Unknown File';
-                const summary = item.summary || 'No Summary Available';
+    document.querySelector('.bubble-container').appendChild(folder);
+}
 
-                // Show the speech bubble
-                showSpeechBubble(fileName, summary);
 
-                // Increment the index for the next bubble
-                i++;
-
-                // // Remove the oldest bubble if the maximum is exceeded
-                // if (document.querySelectorAll('.speech-bubble').length > maxBubbles) {
-                //     const oldestBubble = document.querySelector('.speech-bubble');
-                //     if (oldestBubble) {
-                //         oldestBubble.remove(); // Remove the oldest bubble
-                //     }
-                // }
-
-                // Call the displayBubble function again after the interval
-                setTimeout(displayBubble, displayInterval);
-            } else {
-                // Optionally, you can perform an action after all bubbles are displayed
-                console.log("All bubbles displayed.");
-            }
-        }
-
-        // Start displaying bubbles
-        displayBubble();
+function toggleSummary(summaryElement, button) {
+    if (summaryElement.style.height === 'auto') {
+        summaryElement.style.height = '100%';
+        button.textContent = 'Read More';
     } else {
-        showSpeechBubble('No files found', 'No summaries available.');
+        summaryElement.style.height = 'auto';
+        button.textContent = 'Read Less';
+    }
+}
+
+async function generateSpeechBubbles(data, index = 0) {
+
+    for (const directory_name in data) {
+        const regex = /\./i;
+        console.log(directory_name)
+        regex.test(directory_name) ? showFile(directory_name, data[directory_name], index) : showSpeechBubble(directory_name, "directory", index)
+        directory_name, regex.test(directory_name) ? "not directory" : await generateSpeechBubbles(data[directory_name], index + 1)
     }
 }
