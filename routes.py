@@ -62,7 +62,13 @@ def generate_docs():
 
     return jsonify({"responses": {"README.md": " The `gitHub-Interpreter` is a Python script that uses the `subprocess` module to execute commands on GitHub. It takes two arguments: the command to be executed and the path to the GitHub API endpoint. \n\nThe `command` argument is a string containing the shell command to be executed, for example `\"ls\"`. The `path` argument is also a string, but it specifies the URL of the GitHub API endpoint that will be used to execute the command. For example, if you want to execute the command \"ls\", the path should be `\"https://github.com/username/project-name.gitignore\"`.\n\nThe script returns the output of the command as a string, which is then printed to the console. The data type of the output is determined by the type of the command executed. For example, if you execute \"ls\", it will return an array of file names in the current directory.",
 
-    "text.txt": "something_", "dir_1": {"file1.txt":"text content of file", "file2.txt":"text content of file"} }, "status": "200"
+    "text.txt": "something_", 
+        "dir_1": {"file1.txt":"text content of file", 
+                  "file2.txt":"text content of file", 
+                #   "dir_4": {"alex.fxf": "styling is great","upui.skfkh": "my_fame is gr8"},
+                  "file3.txt":"text content of file", 
+                  "file4.txt":"text content of file", 
+                } }, "status": "200"
 })
 
 
