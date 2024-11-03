@@ -61,19 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const backgroundOverlay = document.querySelector('.background-overlay'); // Select the background overlay
     const bubble_container = document.querySelector('.bubble-container');
 
-    // Create a container for speech bubbles
-    // const bubbleContainer = document.createElement('div');
-    // bubbleContainer.className = 'bubble-container'; // Assign a class for styling
-    // bubbleContainer.style.display = 'grid';
-    // bubbleContainer.style.flexDirection = 'column';
-    // bubbleContainer.style.backgroundColor = 'transparent';
-    // bubbleContainer.style.position = 'fixed'; // Keep it fixed on the screen
-    // bubbleContainer.style.top = '0px'; // Adjust based on preference
-    // bubbleContainer.style.left = '0px'; // Adjust based on preference
-    // bubbleContainer.style.zIndex = '1000'; // Ensure it appears above other elements
-    // bubbleContainer.style.width = '100%';
-    // document.body.appendChild(bubbleContainer); // Append the container to the body
-
     // Add click event to the search icon
     searchIcon.addEventListener('click', function () {
 
@@ -81,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputValue = searchInput.value;
 
         // API endpoint URL (replace with your actual endpoint)
-        const apiUrl = 'http://localhost:5000/api/data';
+        const apiUrl = 'http://localhost:5000';
 
         // Validate input
         if (!inputValue) {
@@ -90,20 +77,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Append the input value as a query parameter
-        const fullUrl = `${apiUrl}?link=${encodeURIComponent(inputValue)}`;
+        const fullUrl = `${apiUrl}/submit`;
+        console.log('GITHUB LINK SENDIN....: ', inputValue);
 
         // Send the data to the backend
         fetch(fullUrl, {
-            method: 'GET', // Use GET method
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json', // Specify the content type
             },
+            body: JSON.stringify({
+                "github-link": inputValue
+            })
         })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok'); // Handle errors
                 }
+
+                fetch(apiUrl + `/generate_docs?link=${inputValue}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json', // Specify the content type
+                    }
+                }).then(r => {
+                    if (!r.ok) {
+                        throw new Error('Network response was not ok'); // Handle errors
+                    }
+                    return r.json()
+                }).then(data => {
+                    // console.log('GOT THE DATA' + data);
+                    console.log('GOT THE DATA: ', JSON.stringify(data, null, 2)); // Pretty print the JSON data
+                })
+
                 showSpeechBubble("Link Posted", "Your link has been sent successfully!"); // Show feedback
+
                 return response.json(); // Parse JSON response
             })
             .then(data => {
@@ -130,14 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         searchContainer.style.display = 'none';
 
-        // searchContainer.style.position = 'fixed';
-        // searchContainer.style.bottom = '0';
-        // searchContainer.style.left = '0';
-        // searchContainer.style.right = '0';
-
-        // searchIcon.style.position = 'fixed';
-        // searchIcon.style.bottom = '0.7%';
-        // searchIcon.style.right = '0.3%';
     });
 });
 
@@ -208,7 +208,7 @@ function showSpeechBubble(fileName, summary) {
 
 function generateSpeechBubbles(data) {
     // Maximum number of bubbles to display
-    const maxBubbles = 5;
+    // const maxBubbles = 5;
 
     // Check if data is an array and has elements
     if (Array.isArray(data) && data.length > 0) {
@@ -228,13 +228,13 @@ function generateSpeechBubbles(data) {
                 // Increment the index for the next bubble
                 i++;
 
-                // Remove the oldest bubble if the maximum is exceeded
-                if (document.querySelectorAll('.speech-bubble').length > maxBubbles) {
-                    const oldestBubble = document.querySelector('.speech-bubble');
-                    if (oldestBubble) {
-                        oldestBubble.remove(); // Remove the oldest bubble
-                    }
-                }
+                // // Remove the oldest bubble if the maximum is exceeded
+                // if (document.querySelectorAll('.speech-bubble').length > maxBubbles) {
+                //     const oldestBubble = document.querySelector('.speech-bubble');
+                //     if (oldestBubble) {
+                //         oldestBubble.remove(); // Remove the oldest bubble
+                //     }
+                // }
 
                 // Call the displayBubble function again after the interval
                 setTimeout(displayBubble, displayInterval);

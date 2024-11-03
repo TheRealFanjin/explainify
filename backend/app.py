@@ -5,7 +5,7 @@ app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
 # Define a route for receiving data
-@app.route('/api/data', methods=['GET'])
+# @app.route('/generate_docs', methods=['GET'])
 def receive_data():
     # Get the 'link' query parameter from the request
     link = request.args.get('link')
