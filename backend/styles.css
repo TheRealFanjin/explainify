@@ -1,0 +1,437 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Scene setup */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: black;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Stars */
+.star {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    width: 2px;
+    height: 2px;
+    animation: twinkle 1s infinite alternate;
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+}
+
+/* Adding variety to stars' animation durations */
+.star:nth-child(odd) {
+    animation-duration: 1.2s;
+}
+
+.star:nth-child(even) {
+    animation-duration: 0.8s;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* Robot styling */
+.scene {
+    margin-bottom: 100px;
+}
+
+.robot {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out;
+    width: 80px;
+    margin-top: -30px;
+    animation: blink 1.5s infinite alternate, float 1s infinite ease-in-out;
+}
+
+/* Robot parts */
+.head,
+.body,
+.arm,
+.leg {
+    position: absolute;
+    background-color: #4ecca3;
+    border-radius: 4px;
+}
+
+.head {
+    width: 30px;
+    height: 30px;
+    top: -40px;
+    left: 25%;
+    background-color: #f0f0f0;
+}
+
+.body {
+    width: 60px;
+    height: 60px;
+    left: 10%;
+    top: 20px;
+}
+
+.arm {
+    width: 10px;
+    height: 30px;
+    background-color: #f0f0f0;
+}
+
+.arm.left {
+    left: -15px;
+    top: 10px;
+}
+
+.arm.right {
+    right: -15px;
+    top: 10px;
+}
+
+.leg {
+    width: 10px;
+    height: 40px;
+    background-color: #f0f0f0;
+    top: 70px;
+}
+
+.leg.left {
+    left: 5px;
+}
+
+.leg.right {
+    right: 5px;
+}
+
+/* Robot blink light effect */
+.robot .head::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #FFEA00;
+    border-radius: 50%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: blink-light 1.5s infinite alternate;
+}
+
+@keyframes blink-light {
+
+    0%,
+    100% {
+        background-color: #FFEA00;
+    }
+
+    50% {
+        background-color: #FF0000;
+    }
+}
+
+/* Text styling */
+.text {
+    color: #FFEA00;
+    font-size: 64px;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Blink effect for the AI robot */
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Floating effect to simulate movement */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-2px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Updated styling for project name and input text */
+#project-name {
+    color: #FFEA00;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 0px 0px 8px rgba(255, 234, 0, 0.6);
+    animation: glow 2s infinite alternate;
+}
+
+#input-text {
+    color: #f0f0f0;
+    font-size: 24px;
+    font-style: italic;
+    text-shadow: 0px 0px 6px rgba(240, 240, 240, 0.6);
+    opacity: 0.8;
+    animation: fadeIn 3s forwards;
+}
+
+/* Glow animation for #project-name */
+@keyframes glow {
+    from {
+        text-shadow: 0px 0px 8px rgba(255, 234, 0, 0.6);
+    }
+
+    to {
+        text-shadow: 0px 0px 12px rgba(255, 234, 0, 1);
+    }
+}
+
+/* Fade-in animation for #input-text */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
+}
+
+/* Search container styling */
+.search-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    border: 2px solid #FFEA00;
+    border-radius: 10px;
+    background-color: #222;
+    padding: 5px;
+}
+
+/* Search input styling */
+.search-input {
+    background-color: transparent;
+    border: none;
+    color: #FFEA00;
+    font-size: 18px;
+    padding: 10px;
+    outline: none;
+    border-radius: 10px 0 0 10px;
+    min-width: 150px;
+    transition: width 0.2s ease;
+    width: 100%;
+}
+
+.search-input:focus {
+    width: 200px;
+    border: 2px solid #ffcc00;
+    box-shadow: 0px 0px 5px rgba(255, 234, 0, 0.6);
+}
+
+/* Search icon styling */
+.search-icon {
+    background-color: #4ecca3;
+    color: #000;
+    padding: 10px;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-icon:hover {
+    background-color: #3eae8a;
+}
+
+.search-icon:hover {
+    background-color: #ffcc00;
+    box-shadow: 0px 0px 10px rgba(255, 204, 0, 0.8);
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+/* Float down animation */
+.float-down {
+    animation: floatDown 3s forwards;
+}
+
+@keyframes floatDown {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(30px);
+    }
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(194, 194, 194, 0.154);
+    z-index: 5;
+    display: none;
+    transition: opacity 0.3s ease;
+}
+
+.background-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+/* Speech bubble styling */
+.speech-bubble {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #4ecca3;
+    border-radius: 10px;
+    padding: 10px;
+    max-width: 200px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: pop-up 0.3s forwards;
+    display: none;
+}
+
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+}
+
+@keyframes pop-up {
+    from {
+        transform: scale(0.8) translateY(20px);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments for the robot */
+@media (max-width: 768px) {
+    .robot {
+        width: 60px;
+    }
+
+    .head,
+    .body,
+    .arm,
+    .leg {
+        width: 75%;
+    }
+}
+
+.bubble-container {
+    /* position: fixed; */
+    /* Keep it fixed on the screen */
+    /* bottom: 20px; */
+    /* Adjust based on preference */
+    /* left: 20px; */
+    /* Adjust based on preference */
+    /* max-height: 300px; */
+    /* Set a maximum height */
+    /* width: 300px; */
+    /* Set a fixed width */
+    overflow-y: auto;
+    /* Allow vertical scrolling */
+    z-index: 1000;
+    /* Ensure it appears above other elements */
+    /* background: rgba(255, 255, 255, 0.9); */
+    /* Optional: Background for visibility */
+    border-radius: 8px;
+    /* Optional: Rounded corners */
+    padding: 10px;
+    /* Optional: Add some padding */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    /* Optional: Shadow for depth */
+
+    /* width: 100%; */
+}
+
+.speech-bubble {
+    background: #f1f1f1;
+    /* Background color for speech bubbles */
+    border-radius: 10px;
+    /* Rounded corners */
+    margin: 5px 0;
+    /* Space between bubbles */
+    padding: 10px;
+    /* Padding inside the bubble */
+    position: relative;
+    /* For positioning the triangle */
+
+    width: 100%;
+}
+
+.file-name {
+    font-weight: bold;
+    /* Make the file name bold */
+    
+}
+
+.summary {
+    margin-top: 5px;
+    /* Space between file name and summary */
+}
