@@ -60,10 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const projectName = document.querySelector('#project-name'); // Select the text element
     const inputText = document.querySelector('#input-text'); // Select the text element
     const backgroundOverlay = document.querySelector('.background-overlay'); // Select the background overlay
-    // const bubble_container = document.querySelector('.bubble-container');
+    const bubble_container = document.querySelector('.bubble-container');
 
     // Add click event to the search icon
     searchIcon.addEventListener('click', function () {
+
+            const loadingBar = document.getElementById('loading-bar');
+            loadingBar.style.width = '100%'; // Start loading
+            loadingBar.style.transition = 'width 2s ease'; // Duration of the loading
 
         appContainer.style.display = 'none';
         // Get the input value
@@ -75,12 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Validate input
         if (!inputValue) {
             alert('Please enter a link!');
+            loadingBar.style.width = '0'; // Reset loading bar if input is empty
             return; // Exit if the input is empty
         }
 
         // Append the input value as a query parameter
         const fullUrl = `${apiUrl}/submit`;
-        console.log('GITHUB LINK SENDIN....: ', inputValue);
+        console.log('GITHUB LINK SENDING....: ', inputValue);
 
         // Send the data to the static
         fetch(fullUrl, {
@@ -123,6 +128,9 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 console.error('Error:', error); // Handle errors
                 alert('There was an error sending the link. Please try again.'); // Optional user alert
+            }).finally(() => {
+                // Reset the loading bar after fetch completes
+                loadingBar.style.width = '0'; // Reset loading bar
             });
 
         // Hide the robot and text, show the overlay, and adjust the search container as before
@@ -139,6 +147,84 @@ document.addEventListener("DOMContentLoaded", function () {
         searchContainer.style.display = 'none';
 
     });
+
+    // searchIcon.addEventListener('click', function () {
+    //     const loadingBar = document.getElementById('loading-bar');
+    //     loadingBar.style.width = '100%'; // Start loading
+    //     loadingBar.style.transition = 'width 2s ease'; // Duration of the loading
+
+    //     // Get the input value
+    //     const inputValue = searchInput.value;
+
+    //     // API endpoint URL (replace with your actual endpoint)
+    //     const apiUrl = 'http://127.0.0.1:5000';
+
+    //     // Validate input
+    //     if (!inputValue) {
+    //         alert('Please enter a link!');
+    //         loadingBar.style.width = '0'; // Reset loading bar if input is empty
+    //         return; // Exit if the input is empty
+    //     }
+
+    //     // Append the input value as a query parameter
+    //     const fullUrl = `${apiUrl}/submit`;
+    //     console.log('GITHUB LINK SENDING....: ', inputValue);
+
+    //     // Send the data to the static
+    //     fetch(fullUrl, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json', // Specify the content type
+    //         },
+    //         body: JSON.stringify({
+    //             "github-link": inputValue
+    //         })
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok'); // Handle errors
+    //             }
+
+    //             return fetch(apiUrl + `/generate_docs?link=${inputValue}`, {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Content-Type': 'application/json', // Specify the content type
+    //                 }
+    //             });
+    //         })
+    //         .then(r => {
+    //             if (!r.ok) {
+    //                 throw new Error('Network response was not ok'); // Handle errors
+    //             }
+    //             return r.json();
+    //         })
+    //         .then(data => {
+    //             console.log('GOT THE DATA: ', JSON.stringify(data, null, 2)); // Pretty print the JSON data
+    //             generateSpeechBubbles(data.responses);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error:', error); // Handle errors
+    //             alert('There was an error sending the link. Please try again.'); // Optional user alert
+    //         })
+    //         .finally(() => {
+    //             // Reset the loading bar after fetch completes
+    //             loadingBar.style.width = '0'; // Reset loading bar
+    //         });
+
+    //     // Hide the robot and text, show the overlay, and adjust the search container as before
+    //     inputText.textContent = '';
+    //     projectName.textContent = '';
+    //     projectName.style.opacity = '0.5';
+    //     robot.style.display = 'none';
+
+    //     // Show overlay
+    //     backgroundOverlay.classList.add('show');
+    //     projectName.classList.add('fadeOut');
+    //     inputText.classList.add('fadeOut');
+
+    //     searchContainer.style.display = 'none';
+    // });
+
 });
 
 function showSpeechBubble(fileName, summary = null, index) {
