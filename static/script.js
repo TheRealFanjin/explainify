@@ -62,32 +62,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const backgroundOverlay = document.querySelector('.background-overlay'); // Select the background overlay
     // const bubble_container = document.querySelector('.bubble-container');
 
-    const twinkleContainer = document.querySelector(".full-body-container");
-
-    // List of your twinkling images
-    // const twinkleImages = ["./public/twinkle1.png", "./public/twinkle2.png", "./public/twinkle3.png", "./public/twinkle4.png", "./public/twinkle5.png"]; // Replace with your actual file names
-
-    // Generate twinkle images at random positions
-    for (let i = 0; i < 15; i++) { // Adjust the number of twinkles here
-        const twinkle = document.createElement("img");
-        twinkle.src = twinkleImages[i % twinkleImages.length]; // Cycle through images
-        twinkle.classList.add("twinkle");
-
-        // Random position for each twinkle
-        twinkle.style.top = Math.random() * 100 + "vh";
-        twinkle.style.left = Math.random() * 100 + "vw";
-
-        // Append to container
-        twinkleContainer.appendChild(twinkle);
-    }
-
     // Add click event to the search icon
     searchIcon.addEventListener('click', function () {
 
         appContainer.style.display = 'none';
-
-
-
         // Get the input value
         const inputValue = searchInput.value;
 
