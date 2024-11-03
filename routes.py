@@ -2,7 +2,7 @@ import atexit
 import os
 # from crypt import methods
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from git import Repo
 from gpt4all import GPT4All
 from helpers import build_directory_dict, cleanup_repo_dir
@@ -10,8 +10,11 @@ from helpers import build_directory_dict, cleanup_repo_dir
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/submit": {"origins": "*"}, r"/generate_docs": {"origins": "*"}})
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.get_json()
@@ -40,9 +43,9 @@ def generate_docs():
     if not os.path.exists(full_repo_path):
         return jsonify({'status': '404', 'error': 'Repository not found.'})
 
-    # llm = GPT4All('orca-mini-3b-gguf2-q4_0.gguf')
+    # llm = GPT4All('gpt4all-13b-snoozy-q4_0.gguf')
     # responses = build_directory_dict(full_repo_path)
-
+    #
     # with llm.chat_session():
     #     def replace_file_contents(file_structure):
     #         for key, value in file_structure.items():
@@ -50,11 +53,11 @@ def generate_docs():
     #                 replace_file_contents(value)
     #             else:
     #                 file_structure[key] = llm.generate(
-    #                     'Pretend you are writing documentation for the following code. Give a description of each function, such as the inputs and outputs and data types: ' +
+    #                     'Pretend you are writing documentation for the following code. Give a description of each function, such as the inputs and outputs and data types. Do not use the word I or refer to yourself in any way, just start with the documentation directly. Here is the code: ' +
     #                     file_structure[key]
     #                 )
     #     replace_file_contents(responses)
-
+    #
     # print('response from ai', responses)
 
     return jsonify({"responses": {"README.md": " The `gitHub-Interpreter` is a Python script that uses the `subprocess` module to execute commands on GitHub. It takes two arguments: the command to be executed and the path to the GitHub API endpoint. \n\nThe `command` argument is a string containing the shell command to be executed, for example `\"ls\"`. The `path` argument is also a string, but it specifies the URL of the GitHub API endpoint that will be used to execute the command. For example, if you want to execute the command \"ls\", the path should be `\"https://github.com/username/project-name.gitignore\"`.\n\nThe script returns the output of the command as a string, which is then printed to the console. The data type of the output is determined by the type of the command executed. For example, if you execute \"ls\", it will return an array of file names in the current directory.",

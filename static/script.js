@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputValue = searchInput.value;
 
         // API endpoint URL (replace with your actual endpoint)
-        const apiUrl = 'http://localhost:5000';
+        const apiUrl = 'http://127.0.0.1:5000';
 
         // Validate input
         if (!inputValue) {
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const fullUrl = `${apiUrl}/submit`;
         console.log('GITHUB LINK SENDIN....: ', inputValue);
 
-        // Send the data to the backend
+        // Send the data to the static
         fetch(fullUrl, {
             method: 'POST',
             headers: {
